@@ -2,6 +2,10 @@
 
 目前支持5个平台图集去水印下载，欢迎各位Star，**提交issues时请附带视频链接**。
 
+短视频解析请移步：https://github.com/5ime/video_spider
+
+演示站源码请移步：https://github.com/5ime/vue-page
+
 ## 支持平台
 
 | 平台 | 状态| 平台 | 状态| 平台 | 状态| 平台 | 状态| 平台 | 状态|
