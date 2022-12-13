@@ -18,7 +18,9 @@ if (strpos($url,'weibo') !== false){
     $arr = $api->zuiyou($url);
 } elseif (strpos($url, 'xhslink') !== false){
     $arr = $api->xhs($url);
-} else {
+} elseif (strpos($url, 'douyin') !== false){
+    $arr = $api->douyin($url);
+}  else {
     $arr = array(
         'code'  => 201,
         'msg' => '不支持您输入的链接'

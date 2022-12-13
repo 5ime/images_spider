@@ -8,7 +8,28 @@
 
 namespace Images_spider;
 class Images
-{    
+{
+    public function douyin($url) {
+        $loc = get_headers($url, true) ['Location'][1];
+        preg_match('/note\/(.*)\?/', $loc, $id);
+        $arr = json_decode($this->curl('https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=' . $id[1]), true);
+        $img = $arr['item_list'][0]["images"];
+        $images = array();
+        for($i=0;$i<count($img);$i++){
+            $none = $img[$i]["url_list"][count($img[$i]["url_list"])-1];
+            array_push($images,$none);
+        }
+        if (!empty($images)){
+            $Json = array(
+                'code' => 200,
+                'msg' => 'success',
+                'count' => count($img),
+                'images' => $images
+            );
+            return $Json;
+        }
+    }
+
     public function pipixia($url){
 		$loc = get_headers($url, true)['Location'];
         preg_match('/item\/(.*)\?/',$loc,$id);
