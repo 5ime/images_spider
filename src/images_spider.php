@@ -10,13 +10,27 @@ namespace Images_spider;
 class Images
 {
     public function douyin($url) {
-        $loc = get_headers($url, true) ['Location'][1];
-        preg_match('/note\/(.*)\?/', $loc, $id);
-        $arr = json_decode($this->curl('https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=' . $id[1]), true);
-        $img = $arr['item_list'][0]["images"];
+        $loc = get_headers($url, true) ['Location'];
+        preg_match('/\/video\/(\d+)\//', $loc, $id);
+        $headers = array(
+            'User-Agent: Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Mobile Safari/537.36 Edg/87.0.664.66',
+            'Cookie: msToken=tsQyL2_m4XgtIij2GZfyu8XNXBfTGELdreF1jeIJTyktxMqf5MMIna8m1bv7zYz4pGLinNP2TvISbrzvFubLR8khwmAVLfImoWo3Ecnl_956MgOK9kOBdwM=; odin_tt=6db0a7d68fd2147ddaf4db0b911551e472d698d7b84a64a24cf07c49bdc5594b2fb7a42fd125332977218dd517a36ec3c658f84cebc6f806032eff34b36909607d5452f0f9d898810c369cd75fd5fb15; ttwid=1%7CfhiqLOzu_UksmD8_muF_TNvFyV909d0cw8CSRsmnbr0%7C1662368529%7C048a4e969ec3570e84a5faa3518aa7e16332cfc7fbcb789780135d33a34d94d2'
+        );
+        $url = 'https://www.iesdouyin.com/aweme/v1/web/aweme/detail/?aweme_id=' . $id[1]. '&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333';
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        $arr = json_decode($result, true);
+        $img = $arr["aweme_detail"]["images"];
         $images = array();
         for($i=0;$i<count($img);$i++){
-            $none = $img[$i]["url_list"][count($img[$i]["url_list"])-1];
+            $none = $img[$i]["url_list"][0];
             array_push($images,$none);
         }
         if (!empty($images)){
