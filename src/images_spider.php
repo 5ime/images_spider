@@ -27,6 +27,7 @@ class Images
            CURLOPT_TIMEOUT => 0,
            CURLOPT_FOLLOWLOCATION => true,
            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+           CURLOPT_SSL_VERIFYPEER => false,
            CURLOPT_CUSTOMREQUEST => 'POST',
            CURLOPT_POSTFIELDS =>'{
             "url":"https://www.douyin.com/aweme/v1/web/aweme/detail/?aweme_id='.$num.'&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333",
