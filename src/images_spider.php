@@ -11,7 +11,7 @@ class Images
 {
     public function douyin($url) {
         $location = get_headers($url, true)['Location'];
-        $loc = $location[0] ?? $location;
+        $loc = is_array($location) ? $location[0] : $location;
         preg_match('/\/video\/(\d+)\//', $loc, $id);
         if(empty($id)) {
             preg_match('/[0-9]+/', $loc, $id);
