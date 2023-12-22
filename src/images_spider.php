@@ -10,11 +10,16 @@ namespace Images_spider;
 class Images
 {
     public function douyin($url) {
-        $loc = get_headers($url, true) ['Location'];
+        $location = get_headers($url, true)['Location'];
+        $loc = is_array($location) ? $location[0] : $location;
         preg_match('/\/video\/(\d+)\//', $loc, $id);
+        if(empty($id)) {
+            preg_match('/[0-9]+/', $loc, $id);
+        }
+        $awemeId = $id[1] ?? $id[0];
         // 关于这里的第三方接口问题 请查看 https://github.com/5ime/images_spider#faq
         $url = 'https://tiktok.iculture.cc/X-Bogus';
-        $data = json_encode(array('url' => 'https://www.douyin.com/aweme/v1/web/aweme/detail/?aweme_id=' . $id[1] . '&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333','user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'));
+        $data = json_encode(array('url' => 'https://www.douyin.com/aweme/v1/web/aweme/detail/?aweme_id=' . $awemeId . '&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333','user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'));
         $header = array('Content-Type: application/json');
         $url = json_decode($this->curl($url, $header, $data), true)['param'];
         
